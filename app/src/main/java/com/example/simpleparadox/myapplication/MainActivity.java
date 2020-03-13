@@ -149,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
         // called when image captured from camera
         if( resultCode == RESULT_OK && requestCode == PICK_IMAGE )
         {
-            imageUri = data.getData();
-            mImageView.setImageURI( imageUri );
+            image_uri = data.getData();
+            mImageView.setImageURI( image_uri );
         } else if ( resultCode == RESULT_OK ) {
             // set image captured to our image view
 
