@@ -14,7 +14,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_image_black_24dp"
         android:layout_width="400dp"
-        android:layout_height="400dp" />
+        android:layout_height="200dp" />
 
     <!--Button to take pic-->
     <Button
@@ -47,5 +47,11 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/show_image_from_firebase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Image From Firebase" />
 
 </LinearLayout>

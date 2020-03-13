@@ -21,6 +21,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,6 +50,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.InputStream;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSION_CODE = 1000;
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     Button mCaptureBtn;
     Button loadImageBtn;
     Button mButtonUpload;
+    Button mShowImageFromFirebaseBtn;
     ProgressBar mProgressBar;
 
     EditText mEditTextFileName;
@@ -82,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         mImageView = findViewById( R.id.image_view );
         mCaptureBtn = findViewById( R.id.capture_image_btn );
         loadImageBtn = findViewById( R.id.load_image );
+        mShowImageFromFirebaseBtn = findViewById( R.id.show_image_from_firebase );
 
         mButtonUpload = findViewById( R.id.btn_upload_image );
         mEditTextFileName = findViewById( R.id.edit_image_name );
@@ -90,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference("Image Uploads");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Image Uploads");
-
 
         //Button click
         mCaptureBtn.setOnClickListener( new View.OnClickListener()
@@ -134,7 +139,22 @@ public class MainActivity extends AppCompatActivity {
                 uploadFile();
             }
         });
+
+
+        mShowImageFromFirebaseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent showImage = new Intent(MainActivity.this, ImageFromFirebase.class);
+                startActivity(showImage);
+            }
+        });
     }
+
+
+
+
+
+
 
 
 
@@ -172,7 +192,8 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
                             Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),
                                     taskSnapshot.getUploadSessionUri().toString());
-                            String uploadId = mDatabaseRef.push().getKey();
+//                            String uploadId = mDatabaseRef.push().getKey();
+                            String uploadId = "Hi";     // this will be username of person
                             mDatabaseRef.child(uploadId).setValue(upload);
                         }
                     })
@@ -186,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-//                            mProgressBar.setProgress((int) progress);
+                            mProgressBar.setProgress((int) progress);
                         }
                     });
         } else {
@@ -194,6 +215,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     //----------------------------------------------------------------------------------
+
+
+
+
+
 
 
 
