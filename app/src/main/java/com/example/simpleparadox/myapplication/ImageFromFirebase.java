@@ -38,31 +38,20 @@ public class ImageFromFirebase extends AppCompatActivity {
         firebaseImage = findViewById( R.id.firebase_image );
 
         reff = FirebaseDatabase.getInstance().getReference().child("Image Uploads").child("Bye");
+        // here gonna have to adjust reff to accurately go to the correct
+        // user, so i think add an if statement
+        // at dataSnapshot.child("//username").getValue().toString();
 
         reff.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String url = dataSnapshot.child("imageUrl").getValue().toString();
 
-
-
-
-
-//                Uri myUri = Uri.parse( url );
-
-
-
-//                Drawable imageToDraw = LoadImageFromWebOperations( url );
-//                String url = "https://firebasestorage.googleapis.com/v0/b/project-demo-70f7b.appspot.com/o/Image%20Uploads%2F1584129100555.jpg?alt=media&token=92736b9f-1633-45f7-b160-7da35d66937f";
                 Log.d("Firebase", url);
-
-//                mImageView.setImageDrawable( imageToDraw );
 
                 Picasso.get()
                         .load( url )
                         .into( firebaseImage );
-//                firebaseImage.setImageURI( myUri );
-//                firebaseImage.setImageDrawable( LoadImageFromWebOperations("https://firebasestorage.googleapis.com/v0/b/project-demo-70f7b.appspot.com/o/Image%20Uploads%2F1584396487619.jpg?alt=media&token=40c5d671-5bc0-4acd-9a1b-0c5d296519a0") );
             }
 
             @Override
