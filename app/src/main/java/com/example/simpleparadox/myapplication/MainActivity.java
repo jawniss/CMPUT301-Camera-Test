@@ -7,6 +7,10 @@
 
     upload image to firebase
     https://www.youtube.com/watch?v=lPfQN-Sfnjw&t=871s
+
+    get correct image url from firebase storage to show in imageview
+    https://stackoverflow.com/questions/52151051/how-to-get-firebase-storage-image-url-in-android-studio
+    Yael Pesso: https://stackoverflow.com/users/7179078/yael-pesso
  */
 
 
@@ -79,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     String thumb_download_url;
+
+    int tempCounter = 1;
 
 
     @Override
@@ -225,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                                 Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
+                                handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     mProgressBar.setProgress(0);
@@ -236,7 +242,11 @@ public class MainActivity extends AppCompatActivity {
                             Upload upload = new Upload( mEditTextFileName.getText().toString().trim(),
                                     thumb_download_url );     // here, need to get a valid uri or a valid url
 //                            String uploadId = mDatabaseRef.push().getKey();
-                            String uploadId = "Bye";     // this will be username of person
+//                            String uploadId = "Bye";     // this will be username of person
+                                String uploadId = String.valueOf( tempCounter );
+                                tempCounter++;          
+
+
                             mDatabaseRef.child(uploadId).setValue(upload);
 
 
