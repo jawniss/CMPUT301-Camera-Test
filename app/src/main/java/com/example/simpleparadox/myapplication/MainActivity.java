@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
     StorageTask mUploadTask;
 
 
+    String thumb_download_url;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -174,14 +177,54 @@ public class MainActivity extends AppCompatActivity {
         // from Waleed Younis
         if (image_uri != null)
         {
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
+            final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(image_uri));
 
             mUploadTask = fileReference.putFile(image_uri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            Handler handler = new Handler();
+//                            handler.postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    mProgressBar.setProgress(0);
+//                                }
+//                            }, 500);
+//
+//                            Toast.makeText(MainActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+//                            Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),
+//                                    mStorageRef.getDownloadUrl().toString());     // here, need to get a valid uri or a valid url
+////                            String uploadId = mDatabaseRef.push().getKey();
+//                            String uploadId = "Hi";     // this will be username of person
+//                            mDatabaseRef.child(uploadId).setValue(upload);
+//                        }
+//                    })
+
+
+            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    mUploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                         @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Handler handler = new Handler();
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+
+                            }
+                            // Continue with the task to get the download URL
+                            return fileReference.getDownloadUrl();
+
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                thumb_download_url = task.getResult().toString();
+
+
+                                Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
@@ -190,13 +233,23 @@ public class MainActivity extends AppCompatActivity {
                             }, 500);
 
                             Toast.makeText(MainActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-                            Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),
-                                    taskSnapshot.getUploadSessionUri().toString());
+                            Upload upload = new Upload( mEditTextFileName.getText().toString().trim(),
+                                    thumb_download_url );     // here, need to get a valid uri or a valid url
 //                            String uploadId = mDatabaseRef.push().getKey();
-                            String uploadId = "Hi";     // this will be username of person
+                            String uploadId = "Bye";     // this will be username of person
                             mDatabaseRef.child(uploadId).setValue(upload);
+
+
+
+
+                            }
                         }
-                    })
+                    });
+
+                }
+            })
+
+
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
@@ -215,6 +268,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     //----------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
