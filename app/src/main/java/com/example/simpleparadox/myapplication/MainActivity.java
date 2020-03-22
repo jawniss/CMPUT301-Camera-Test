@@ -25,13 +25,11 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -39,8 +37,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,8 +50,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.InputStream;
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -103,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
 
         mProgressBar = findViewById( R.id.progress_bar );
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("Image Uploads");
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Image Uploads");
+        mStorageRef = FirebaseStorage.getInstance().getReference("Profile pictures");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Profile pictures");
 
         //Button click
         mCaptureBtn.setOnClickListener( new View.OnClickListener()
@@ -242,9 +236,10 @@ public class MainActivity extends AppCompatActivity {
                             Upload upload = new Upload( mEditTextFileName.getText().toString().trim(),
                                     thumb_download_url );     // here, need to get a valid uri or a valid url
 //                            String uploadId = mDatabaseRef.push().getKey();
-//                            String uploadId = "Bye";     // this will be username of person
-                                String uploadId = String.valueOf( tempCounter );
-                                tempCounter++;          
+                            String uploadId = "Will_be_username";     // this will be username of person
+//                                String uploadId = String.valueOf( tempCounter );
+//                                tempCounter++;
+
 
 
                             mDatabaseRef.child(uploadId).setValue(upload);

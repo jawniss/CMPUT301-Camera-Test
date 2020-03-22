@@ -37,7 +37,7 @@ public class ImageFromFirebase extends AppCompatActivity {
 
         firebaseImage = findViewById( R.id.firebase_image );
 
-        reff = FirebaseDatabase.getInstance().getReference().child("Image Uploads").child("Bye");
+        reff = FirebaseDatabase.getInstance().getReference().child("Profile pictures").child("Will_be_username");
         // here gonna have to adjust reff to accurately go to the correct
         // user, so i think add an if statement
         // at dataSnapshot.child("//username").getValue().toString();
